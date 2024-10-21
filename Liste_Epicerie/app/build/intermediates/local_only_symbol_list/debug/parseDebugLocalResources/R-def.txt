@@ -1,0 +1,29 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id barre
+id button
+id button2
+id editTextText
+id editTextText2
+id editTextText3
+id imageView
+id imageView3
+id infos
+id main
+id nomProduits
+id textView
+id textView2
+layout activity_main
+layout activity_modification_item
+layout item_epicerie
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.Liste_Epicerie
+style Theme.Liste_Epicerie
+xml backup_rules
+xml data_extraction_rules
