@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="dark_gray">#333333</color>
+    <color name="green">#4CAF50</color>
     <color name="white">#FFFFFFFF</color>
     <string name="app_name">Liste_Epicerie</string>
     <style name="Base.Theme.Liste_Epicerie" parent="Theme.Material3.DayNight.NoActionBar">
         
         
+    </style>
+    <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:titleTextColor">#FFFFFF</item> 
     </style>
     <style name="Theme.Liste_Epicerie" parent="Base.Theme.Liste_Epicerie"/>
 </resources>

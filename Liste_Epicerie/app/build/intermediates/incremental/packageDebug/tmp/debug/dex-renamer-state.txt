@@ -1,4 +1,4 @@
-#Mon Oct 21 10:18:24 EDT 2024
+#Sat Oct 26 00:02:10 EDT 2024
 base.0=C\:\\Users\\biyad\\Desktop\\Travail-Pratique-1-Liste-picerie-Ilyass-Jean-Christ\\Liste_Epicerie\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\biyad\\Desktop\\Travail-Pratique-1-Liste-picerie-Ilyass-Jean-Christ\\Liste_Epicerie\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\biyad\\Desktop\\Travail-Pratique-1-Liste-picerie-Ilyass-Jean-Christ\\Liste_Epicerie\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\8\\classes.dex

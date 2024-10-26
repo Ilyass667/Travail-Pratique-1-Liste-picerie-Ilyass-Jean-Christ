@@ -1,10 +1,13 @@
 package com.example.liste_epicerie
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -31,16 +34,35 @@ class GenericItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+
+        //Afficher le nom de l'application dans le menu
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Initialisation du bouton
+        val button3: Button = findViewById(R.id.button3)
+
+        // Ajout de l'action lors du clic sur le bouton
+        button3.setOnClickListener {
+            // Création d'un intent pour passer à la nouvelle activité
+            val intent = Intent(this, Modification_Item::class.java)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }

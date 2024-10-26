@@ -1,18 +1,23 @@
 package com.example.liste_epicerie
 
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 class Modification_Item : AppCompatActivity() {
     private var quantity: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modification_item)
+
+
+        //Afficher le nom de l'application dans le menu
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
 
         val editText = findViewById<EditText>(R.id.editTextText)
@@ -30,6 +35,11 @@ class Modification_Item : AppCompatActivity() {
             quantity++
             updateEditText(editText)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main_menu_modification_item, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
 
