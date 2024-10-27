@@ -19,6 +19,8 @@ data class Item(
     var imageUri: String?
 )
 
+data class Category(val name: String, val items: List<Item>)
+
 @Dao
 interface ItemDao {
     @Insert
@@ -32,6 +34,9 @@ interface ItemDao {
 
     @Query("SELECT * FROM Item WHERE id = :id")
     fun getItemById(id: Int): Item?
+
+    @Query("SELECT * FROM Item")
+    fun getAllItems(): List<Item>
 }
 
 @Database(entities = [Item::class], version = 1)
