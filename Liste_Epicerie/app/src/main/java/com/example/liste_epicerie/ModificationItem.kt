@@ -110,8 +110,7 @@ class ModificationItem: AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_delete -> {
                 // Navigate back to MainActivity
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                finish()
                 true
             }
             R.id.action_done -> {

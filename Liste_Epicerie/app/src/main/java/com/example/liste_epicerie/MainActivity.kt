@@ -1,7 +1,9 @@
 package com.example.liste_epicerie
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -88,6 +90,8 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val itemList = db.itemDao().getAllItems()
             val panierItemList = panierDb.panierItemDao().getAllPanierItems()
+            Log.d(TAG, "onCreate: $itemList")
+            Log.d(TAG, "onCreate: $panierItemList")
 
 
             withContext(Dispatchers.Main) {
@@ -125,10 +129,11 @@ class MainActivity : AppCompatActivity() {
                 category = item.category,
                 imageUri = item.imageUri
             )
+
+            db.itemDao().delete(item)
+
             panierDb.panierItemDao().insert(panierItem)
 
-            // Delete item from the normal database
-            db.itemDao().delete(item)
 
             withContext(Dispatchers.Main) {
                 // Remove item from its current RecyclerView
@@ -158,10 +163,11 @@ class MainActivity : AppCompatActivity() {
                 category = panierItem.category,
                 imageUri = panierItem.imageUri
             )
+            panierDb.panierItemDao().delete(panierItem)
+
             db.itemDao().insert(item)
 
             // Delete item from the panier database
-            panierDb.panierItemDao().delete(panierItem)
 
             withContext(Dispatchers.Main) {
                 // Remove item from the panier RecyclerView
@@ -187,5 +193,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.textPanier).visibility = View.GONE
         }
     }
+
+
 
 }
