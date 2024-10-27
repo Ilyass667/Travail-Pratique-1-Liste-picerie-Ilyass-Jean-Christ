@@ -4,18 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import android.net.Uri
-import android.provider.MediaStore
 import android.view.Menu
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +19,9 @@ import androidx.room.Room
 import com.example.liste_epicerie.data.Category
 import com.example.liste_epicerie.data.ItemDatabase
 import com.example.liste_epicerie.data.Item
+import com.example.liste_epicerie.data.Panier
+import com.example.liste_epicerie.data.PanierDatabase
+import com.example.liste_epicerie.data.PanierItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,7 +49,9 @@ class GenericItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: ItemDatabase
-    
+    private lateinit var panierDb: PanierDatabase
+    private val panierList = mutableListOf<Item>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -61,7 +62,12 @@ class MainActivity : AppCompatActivity() {
             ItemDatabase::class.java, "item_db"
         ).build()
 
-        //Afficher le nom de l'application dans le menu
+        panierDb = Room.databaseBuilder(
+            applicationContext,
+            PanierDatabase::class.java, "panier_db"
+        ).build()
+
+        // Afficher le nom de l'application dans le menu
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -70,18 +76,30 @@ class MainActivity : AppCompatActivity() {
 
         // Set up RecyclerView
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        val recyclerViewPanier : RecyclerView = findViewById(R.id.recyclerViewPanier)
+        findViewById<TextView>(R.id.textPanier).setText(R.string.panier)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerViewPanier.layoutManager = LinearLayoutManager(this)
+
+        // Set up Panier RecyclerView
+
 
         // Load items from the database
-    CoroutineScope(Dispatchers.IO).launch {
-        var itemList = db.itemDao().getAllItems()
+        CoroutineScope(Dispatchers.IO).launch {
+            val itemList = db.itemDao().getAllItems()
+            val panierItemList = panierDb.panierItemDao().getAllPanierItems()
 
 
-        withContext(Dispatchers.Main) {
-            val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value) }
-            recyclerView.adapter = CategoryAdapter(categories)
+            withContext(Dispatchers.Main) {
+            val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value.toMutableList()) }.toMutableList()
+            recyclerView.adapter = CategoryAdapter(categories, { item ->
+                moveToPanier(item)
+            })
+                recyclerViewPanier.adapter = PanierItemAdapter(panierItemList)
+                panierList.addAll(panierItemList.map { Item(it.id, it.name, it.quantity, it.category, it.imageUri) })
+            }
         }
-    }
+
         // Ajout de l'action lors du clic sur le bouton
         button3.setOnClickListener {
             // Création d'un intent pour passer à la nouvelle activité
@@ -94,11 +112,35 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+
+    private fun moveToPanier(item: Item) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Add item to the panier database
+            val panierItem = PanierItem(
+                name = item.name,
+                quantity = item.quantity,
+                category = item.category,
+                imageUri = item.imageUri
+            )
+            panierDb.panierItemDao().insert(panierItem)
+
+            // Delete item from the normal database
+            db.itemDao().delete(item)
+
+            withContext(Dispatchers.Main) {
+                // Remove item from its current RecyclerView
+                val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
+                val panierAdapter = findViewById<RecyclerView>(R.id.recyclerViewPanier).adapter as PanierItemAdapter
+                val category = currentAdapter.categories.find { it.items.contains(item) }
+                category?.items?.remove(item)
+                currentAdapter.notifyDataSetChanged()
+
+                // Add item to the panier RecyclerView
+                panierList.add(item)
+                panierAdapter.items.add(panierItem)
+                panierAdapter.notifyDataSetChanged()
+            }
+        }
     }
 }

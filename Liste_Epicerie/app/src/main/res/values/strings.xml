@@ -9,4 +9,5 @@
         <item>Meat</item>
         <item>Uncategorized</item>
     </string-array>
+    <string name="panier">Panier</string>
 </resources>

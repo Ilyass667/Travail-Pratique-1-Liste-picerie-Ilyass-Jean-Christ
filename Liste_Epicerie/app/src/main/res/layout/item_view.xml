@@ -39,4 +39,14 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp" />
 
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:layout_toStartOf="@id/imageViewItem"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp" />
+
+
 </RelativeLayout>

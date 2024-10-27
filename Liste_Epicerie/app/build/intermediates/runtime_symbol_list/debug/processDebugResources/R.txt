@@ -3110,6 +3110,7 @@ int id CTRL 0x7f080003
 int id FUNCTION 0x7f080004
 int id META 0x7f080005
 int id NO_DEBUG 0x7f080006
+int id Panier 0x7f08020e
 int id SHIFT 0x7f080007
 int id SHOW_ALL 0x7f080008
 int id SHOW_PATH 0x7f080009
@@ -3345,7 +3346,6 @@ int id invisible 0x7f0800eb
 int id inward 0x7f0800ec
 int id italic 0x7f0800ed
 int id item_touch_helper_previous_elevation 0x7f0800ee
-int id item_view 0x7f080208
 int id itemsRecyclerView 0x7f08020a
 int id jumpToEnd 0x7f0800ef
 int id jumpToStart 0x7f0800f0
@@ -3460,6 +3460,7 @@ int id outline 0x7f08015b
 int id outward 0x7f08015c
 int id overshoot 0x7f08015d
 int id packed 0x7f08015e
+int id panierRecyclerView 0x7f08020f
 int id parallax 0x7f08015f
 int id parent 0x7f080160
 int id parentPanel 0x7f080161
@@ -3480,6 +3481,7 @@ int id radio 0x7f08016f
 int id ratio 0x7f080170
 int id rectangles 0x7f080171
 int id recyclerView 0x7f080202
+int id recyclerViewPanier 0x7f08020c
 int id report_drawn 0x7f080172
 int id reverseSawtooth 0x7f080173
 int id right 0x7f080174
@@ -3567,11 +3569,11 @@ int id tag_window_insets_animation_callback 0x7f0801c5
 int id text 0x7f0801c6
 int id text2 0x7f0801c7
 int id textEnd 0x7f0801c8
+int id textPanier 0x7f080211
 int id textSpacerNoButtons 0x7f0801c9
 int id textSpacerNoTitle 0x7f0801ca
 int id textStart 0x7f0801cb
 int id textTop 0x7f0801cc
-int id textView2 0x7f080203
 int id textViewName 0x7f080206
 int id textViewQuantity 0x7f080207
 int id text_input_end_icon 0x7f0801cd
@@ -3762,6 +3764,7 @@ int layout ime_base_split_test_activity 0x7f0b002e
 int layout ime_secondary_split_test_activity 0x7f0b002f
 int layout item_category 0x7f0b0070
 int layout item_epicerie 0x7f0b0030
+int layout item_panier 0x7f0b0071
 int layout item_view 0x7f0b006f
 int layout m3_alert_dialog 0x7f0b0031
 int layout m3_alert_dialog_actions 0x7f0b0032
@@ -3820,6 +3823,7 @@ int layout notification_template_custom_big 0x7f0b0066
 int layout notification_template_icon_group 0x7f0b0067
 int layout notification_template_part_chronometer 0x7f0b0068
 int layout notification_template_part_time 0x7f0b0069
+int layout panier 0x7f0b0072
 int layout select_dialog_item_material 0x7f0b006a
 int layout select_dialog_multichoice_material 0x7f0b006b
 int layout select_dialog_singlechoice_material 0x7f0b006c
@@ -3985,6 +3989,7 @@ int string mtrl_switch_track_decoration_path 0x7f100097
 int string mtrl_switch_track_path 0x7f100098
 int string mtrl_timepicker_cancel 0x7f100099
 int string mtrl_timepicker_confirm 0x7f10009a
+int string panier 0x7f1000a7
 int string password_toggle_content_description 0x7f10009b
 int string path_password_eye 0x7f10009c
 int string path_password_eye_mask_strike_through 0x7f10009d
