@@ -18,8 +18,8 @@ data class Item(
     var category: String,
     var imageUri: String?
 )
-
 data class Category(val name: String, val items: List<Item>)
+
 
 @Dao
 interface ItemDao {

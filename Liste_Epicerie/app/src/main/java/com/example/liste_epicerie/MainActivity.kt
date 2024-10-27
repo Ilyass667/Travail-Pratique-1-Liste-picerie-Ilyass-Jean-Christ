@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         db = Room.databaseBuilder(
             applicationContext,
-            ItemDatabase::class.java, "item-database"
+            ItemDatabase::class.java, "item_db"
         ).build()
 
         //Afficher le nom de l'application dans le menu
@@ -74,18 +74,6 @@ class MainActivity : AppCompatActivity() {
         // Load items from the database
     CoroutineScope(Dispatchers.IO).launch {
         var itemList = db.itemDao().getAllItems()
-
-        if (itemList.isEmpty()) {
-            // Add a dummy item for testing
-            val dummyItem = Item(name = "Dummy Item", quantity = 1, category = "Test", imageUri = null)
-            db.itemDao().insert(dummyItem)
-            db.itemDao().insert(Item(name = "Dummy Item", quantity = 1, category = "Test", imageUri = null))
-            db.itemDao().insert(Item(name = "Dummy Item", quantity = 1, category = "Test2", imageUri = null))
-            db.itemDao().insert(Item(name = "Dummy Item", quantity = 1, category = "Test2", imageUri = null))
-            db.itemDao().insert(Item(name = "Dummy Item", quantity = 1, category = "Test3", imageUri = null))
-            db.itemDao().insert(Item(name = "Dummy Item", quantity = 1, category = "Test3", imageUri = null))
-            itemList = db.itemDao().getAllItems() // Reload the items
-        }
 
 
         withContext(Dispatchers.Main) {

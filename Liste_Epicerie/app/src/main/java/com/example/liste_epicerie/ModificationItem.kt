@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -20,6 +21,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ModificationItem: AppCompatActivity() {
     private lateinit var editTextName: EditText
@@ -56,6 +60,25 @@ class ModificationItem: AppCompatActivity() {
         // Récupérer l'ID de l'item via Intent
         val itemId = intent.getIntExtra("ITEM_ID", -1)
 
+        if (itemId != -1) {
+            CoroutineScope(Dispatchers.IO).launch {
+                currentItem = db.itemDao().getItemById(itemId)
+                withContext(Dispatchers.Main) {
+                    currentItem?.let { item ->
+                        editTextName.setText(item.name)
+                        editTextQuantity.setText(item.quantity.toString())
+                        spinnerCategory.setSelection(resources.getStringArray(R.array.category_array).indexOf(item.category))
+                        val uri: Uri? = item.imageUri?.let { Uri.parse(it) }
+                        if (item.imageUri != null) {
+                            imageViewItem.setImageURI(uri)
+                            selectedImageUri = uri
+                        }
+
+                    }
+                }
+            }
+        }
+
         // Charger l'item en arrière-plan avec une coroutine
         CoroutineScope(Dispatchers.IO).launch {
             currentItem = db.itemDao().getItemById(itemId)
@@ -69,6 +92,8 @@ class ModificationItem: AppCompatActivity() {
                 }
             }
         }
+
+
 
         // Bouton pour changer l'image
         buttonSelectImage.setOnClickListener {
@@ -113,14 +138,41 @@ class ModificationItem: AppCompatActivity() {
     // Méthode pour choisir une image depuis la galerie
     private fun selectImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivityForResult(intent, 100)
+    }
+
+    private fun saveImageToInternalStorage(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val file = File(filesDir, "selected_image.jpg")
+            val outputStream = FileOutputStream(file)
+
+            inputStream.copyTo(outputStream)
+
+            inputStream.close()
+            outputStream.close()
+
+            file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            imageViewItem.setImageURI(selectedImageUri)
+            val uri = data.data
+
+            val imagePath = uri?.let { saveImageToInternalStorage(it) }
+            selectedImageUri = Uri.parse(imagePath)
+            if (imagePath != null) {
+                imageViewItem.setImageURI(selectedImageUri)
+            } else {
+                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -148,6 +200,7 @@ private fun saveChanges() {
                 Toast.makeText(this@ModificationItem, "Item créé", Toast.LENGTH_SHORT).show()
                 finish() // Close the activity
             }
+            Log.d("ModificationItem", "New item inserted: $newItem")
         } else {
             // Update the existing item
             currentItem?.let { item ->
@@ -169,7 +222,6 @@ private fun saveChanges() {
     // Supprimer l'item de la base de données
     private fun deleteItem() {
         currentItem?.let { item ->
-            // Supprimer l'item en arrière-plan
             CoroutineScope(Dispatchers.IO).launch {
                 db.itemDao().delete(item)
                 withContext(Dispatchers.Main) {
