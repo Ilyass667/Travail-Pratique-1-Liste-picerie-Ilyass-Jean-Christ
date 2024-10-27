@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style personnalisé pour la Toolbar -->
+    <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:titleTextColor">#FFFFFF</item> <!-- Couleur blanche pour le titre de l'application-->
+    </style>
+</resources>

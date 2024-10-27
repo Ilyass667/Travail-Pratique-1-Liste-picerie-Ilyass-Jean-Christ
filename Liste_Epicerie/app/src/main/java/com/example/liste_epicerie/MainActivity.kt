@@ -1,16 +1,30 @@
 package com.example.liste_epicerie
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import android.net.Uri
+import android.provider.MediaStore
+import android.view.Menu
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.room.Room
+import com.example.liste_epicerie.data.ItemDatabase
+import com.example.liste_epicerie.data.Item
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class GenericItem(var name: String, var quantity: Int, var image: Int)
 
@@ -37,10 +51,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+
+        //Afficher le nom de l'application dans le menu
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        // Initialisation du bouton
+        val button3: Button = findViewById(R.id.button3)
+
+        // Ajout de l'action lors du clic sur le bouton
+        button3.setOnClickListener {
+            // Création d'un intent pour passer à la nouvelle activité
+            val intent = Intent(this, ModificationItem::class.java)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }

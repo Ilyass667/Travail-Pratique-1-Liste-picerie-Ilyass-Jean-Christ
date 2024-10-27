@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Liste_Epicerie</string>
+
+    <string-array name="category_array">
+        <item>Bakery</item>
+        <item>Dairy</item>
+        <item>Produce</item>
+        <item>Frozen Food</item>
+        <item>Meat</item>
+        <item>Uncategorized</item>
+    </string-array>
 </resources>
