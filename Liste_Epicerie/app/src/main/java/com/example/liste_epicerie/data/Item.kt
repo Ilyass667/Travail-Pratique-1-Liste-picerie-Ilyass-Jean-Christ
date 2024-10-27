@@ -40,6 +40,8 @@ interface PanierItemDao {
     @Query("SELECT * FROM PanierItem")
     fun getAllPanierItems(): MutableList<PanierItem>
 
+    @Delete
+    fun delete(item: PanierItem)
 
     @Query ("DELETE FROM PanierItem")
     fun deleteAll()

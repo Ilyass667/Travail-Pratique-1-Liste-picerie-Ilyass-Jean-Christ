@@ -95,7 +95,9 @@ class MainActivity : AppCompatActivity() {
             recyclerView.adapter = CategoryAdapter(categories, { item ->
                 moveToPanier(item)
             })
-                recyclerViewPanier.adapter = PanierItemAdapter(panierItemList)
+                recyclerViewPanier.adapter = PanierItemAdapter(panierItemList) { panierItem ->
+                    moveToCategories(panierItem)
+                }
                 panierList.addAll(panierItemList.map { Item(it.id, it.name, it.quantity, it.category, it.imageUri) })
             }
         }
@@ -135,12 +137,55 @@ class MainActivity : AppCompatActivity() {
                 val category = currentAdapter.categories.find { it.items.contains(item) }
                 category?.items?.remove(item)
                 currentAdapter.notifyDataSetChanged()
+                currentAdapter.checkAndRemoveEmptyCategories()
 
                 // Add item to the panier RecyclerView
                 panierList.add(item)
                 panierAdapter.items.add(panierItem)
                 panierAdapter.notifyDataSetChanged()
+                findViewById<TextView>(R.id.textPanier).visibility = View.VISIBLE
             }
         }
     }
+
+    private fun moveToCategories(panierItem: PanierItem) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Add item back to the main database
+            val item = Item(
+                id = panierItem.id,
+                name = panierItem.name,
+                quantity = panierItem.quantity,
+                category = panierItem.category,
+                imageUri = panierItem.imageUri
+            )
+            db.itemDao().insert(item)
+
+            // Delete item from the panier database
+            panierDb.panierItemDao().delete(panierItem)
+
+            withContext(Dispatchers.Main) {
+                // Remove item from the panier RecyclerView
+                deleteFromRecycleView(panierItem)
+                // Add item back to the categories RecyclerView
+                val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
+                val category = currentAdapter.categories.find { it.name == item.category }
+                if (category != null) {
+                    category.items.add(item)
+                } else {
+                    currentAdapter.categories.add(Category(item.category, mutableListOf(item)))
+                }
+                currentAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun deleteFromRecycleView(item: PanierItem) {
+        val panierAdapter = findViewById<RecyclerView>(R.id.recyclerViewPanier).adapter as PanierItemAdapter
+        panierAdapter.items.remove(item)
+        panierAdapter.notifyDataSetChanged()
+        if (panierAdapter.items.isEmpty()) {
+            findViewById<TextView>(R.id.textPanier).visibility = View.GONE
+        }
+    }
+
 }

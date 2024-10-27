@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -10,8 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Item Name"
         android:textSize="18sp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/textViewQuantity"
@@ -19,24 +22,28 @@
         android:layout_height="wrap_content"
         android:text="(0)"
         android:textSize="18sp"
-        android:layout_toEndOf="@id/textViewName"
-        android:layout_marginStart="8dp"
-        android:layout_centerVertical="true" />
+        app:layout_constraintTop_toTopOf="@id/textViewName"
+        app:layout_constraintBottom_toBottomOf="@id/textViewName"
+        app:layout_constraintStart_toEndOf="@id/textViewName"
+        android:layout_marginStart="8dp" />
 
     <ImageView
         android:id="@+id/imageViewItem"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <Button
         android:id="@+id/buttonAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Action"
-        android:layout_toStartOf="@id/imageViewItem"
-        android:layout_centerVertical="true"
+        android:text="Modifier"
+        app:layout_constraintEnd_toStartOf="@id/imageViewItem"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="8dp" />
 
     <Button
@@ -44,9 +51,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
-        android:layout_toStartOf="@id/imageViewItem"
-        android:layout_centerVertical="true"
+        app:layout_constraintEnd_toStartOf="@id/buttonAction"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="8dp" />
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

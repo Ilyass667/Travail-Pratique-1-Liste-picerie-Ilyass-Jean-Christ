@@ -3,6 +3,7 @@ package com.example.liste_epicerie
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.log
 
 class ItemAdapter(private val itemList: MutableList<Item>, private val onItemClicked: (Item) -> Unit) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
@@ -48,10 +50,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                 }
             }
 
-            fun notifyCategoryEmpty() {
-                val categoryAdapter = itemView.context as CategoryAdapter
-                categoryAdapter.checkAndRemoveEmptyCategories()
-            }
+
 
             buttonDelete.setOnClickListener {
                 val position = adapterPosition
@@ -69,7 +68,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                             // Remove item from the list and notify adapter
                             itemList.removeAt(position)
                             adapter.notifyItemRemoved(position)
-                            val categoryAdapter = itemView.context as CategoryAdapter
+                            val categoryAdapter = (itemView.context as MainActivity).findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
                             categoryAdapter.checkAndRemoveEmptyCategories()
                         }
                     }

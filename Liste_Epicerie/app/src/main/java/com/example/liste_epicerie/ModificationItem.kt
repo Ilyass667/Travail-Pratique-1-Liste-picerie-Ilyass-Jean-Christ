@@ -48,8 +48,6 @@ class ModificationItem: AppCompatActivity() {
         imageViewItem = findViewById(R.id.imageViewItem)
 
         val buttonSelectImage: Button = findViewById(R.id.buttonSelectImage)
-        val buttonSave: Button = findViewById(R.id.buttonSave)
-        val buttonDelete: Button = findViewById(R.id.buttonDelete)
 
         // Initialisation de la base de données Room
         db = Room.databaseBuilder(
@@ -100,15 +98,7 @@ class ModificationItem: AppCompatActivity() {
             selectImage()
         }
 
-        // Bouton pour enregistrer les modifications
-        buttonSave.setOnClickListener {
-            saveChanges()
-        }
 
-        // Bouton pour supprimer l'item
-        buttonDelete.setOnClickListener {
-            deleteItem()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -184,51 +174,6 @@ class ModificationItem: AppCompatActivity() {
     }
 
 
-    // Enregistrer les modifications dans la base de données
-private fun saveChanges() {
-    val newName = editTextName.text.toString()
-    val newQuantity = editTextQuantity.text.toString().toInt()
-    val newCategory = spinnerCategory.selectedItem.toString()
-    val newImageUri = selectedImageUri?.toString()
 
-    CoroutineScope(Dispatchers.IO).launch {
-        if (currentItem == null) {
-            // Create a new item
-            val newItem = Item(name = newName, quantity = newQuantity, category = newCategory, imageUri = newImageUri)
-            db.itemDao().insert(newItem)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@ModificationItem, "Item créé", Toast.LENGTH_SHORT).show()
-                finish() // Close the activity
-            }
-            Log.d("ModificationItem", "New item inserted: $newItem")
-        } else {
-            // Update the existing item
-            currentItem?.let { item ->
-                item.name = newName
-                item.quantity = newQuantity
-                item.category = newCategory
-                item.imageUri = newImageUri
 
-                db.itemDao().update(item)
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ModificationItem, "Item modifié", Toast.LENGTH_SHORT).show()
-                    finish() // Close the activity
-                }
-            }
-        }
-    }
-}
-
-    // Supprimer l'item de la base de données
-    private fun deleteItem() {
-        currentItem?.let { item ->
-            CoroutineScope(Dispatchers.IO).launch {
-                db.itemDao().delete(item)
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ModificationItem, "Item supprimé", Toast.LENGTH_SHORT).show()
-                    finish() // Fermer l'activité
-                }
-            }
-        }
-    }
 }
