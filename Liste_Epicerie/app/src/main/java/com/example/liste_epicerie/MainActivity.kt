@@ -50,6 +50,7 @@ class GenericItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: ItemDatabase
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

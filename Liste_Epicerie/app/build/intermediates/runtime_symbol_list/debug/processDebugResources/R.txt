@@ -3205,6 +3205,7 @@ int id bounceBoth 0x7f080062
 int id bounceEnd 0x7f080063
 int id bounceStart 0x7f080064
 int id button3 0x7f080200
+int id buttonAction 0x7f08020b
 int id buttonDelete 0x7f080065
 int id buttonPanel 0x7f080066
 int id buttonSave 0x7f080067
@@ -3571,7 +3572,6 @@ int id textSpacerNoTitle 0x7f0801ca
 int id textStart 0x7f0801cb
 int id textTop 0x7f0801cc
 int id textView2 0x7f080203
-int id textViewCategory 0x7f080205
 int id textViewName 0x7f080206
 int id textViewQuantity 0x7f080207
 int id text_input_end_icon 0x7f0801cd
@@ -7212,3 +7212,4 @@ int[] styleable include { 0x7f030132 }
 int styleable include_constraintSet 0
 int xml backup_rules 0x7f130000
 int xml data_extraction_rules 0x7f130001
+int xml file_paths 0x7f130002

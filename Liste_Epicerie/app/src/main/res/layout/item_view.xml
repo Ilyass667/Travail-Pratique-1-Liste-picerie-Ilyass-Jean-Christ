@@ -30,4 +30,13 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_launcher_foreground" />
+    <Button
+        android:id="@+id/buttonAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Action"
+        android:layout_toStartOf="@id/imageViewItem"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp" />
+
 </RelativeLayout>
