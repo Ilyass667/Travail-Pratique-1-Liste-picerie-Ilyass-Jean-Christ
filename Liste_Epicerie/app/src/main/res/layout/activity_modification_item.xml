@@ -54,6 +54,13 @@
         android:layout_height="wrap_content"
         android:text="Changer l'image" />
 
+    <Button
+        android:id="@+id/buttonprisePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="prendre une photo" />
+
+
 
 
 </LinearLayout>

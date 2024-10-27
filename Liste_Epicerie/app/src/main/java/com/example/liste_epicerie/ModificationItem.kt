@@ -1,6 +1,7 @@
 package com.example.liste_epicerie
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -48,7 +49,7 @@ class ModificationItem: AppCompatActivity() {
         imageViewItem = findViewById(R.id.imageViewItem)
 
         val buttonSelectImage: Button = findViewById(R.id.buttonSelectImage)
-
+        val buttonPrendrePhoto = findViewById<Button>(R.id.buttonprisePhoto)
         // Initialisation de la base de données Room
         db = Room.databaseBuilder(
             applicationContext,
@@ -98,6 +99,10 @@ class ModificationItem: AppCompatActivity() {
             selectImage()
         }
 
+        buttonPrendrePhoto.setOnClickListener {
+            prendrePhoto()
+        }
+
 
     }
 
@@ -131,6 +136,10 @@ class ModificationItem: AppCompatActivity() {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivityForResult(intent, 100)
     }
+    private fun prendrePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, 101)
+    }
 
     private fun saveImageToInternalStorage(uri: Uri): String? {
         return try {
@@ -150,23 +159,45 @@ class ModificationItem: AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            val uri = data.data
+    if ((requestCode == 100) && resultCode == RESULT_OK && data != null) {
+        val uri = data.data
 
-            val imagePath = uri?.let { saveImageToInternalStorage(it) }
-            selectedImageUri = Uri.parse(imagePath)
-            if (imagePath != null) {
+        val imagePath = uri?.let { saveImageToInternalStorage(it) }
+        selectedImageUri = Uri.parse(imagePath)
+        if (imagePath != null) {
+            imageViewItem.setImageURI(selectedImageUri)
+        } else {
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+        }
+    } else if (requestCode == 101 && resultCode == RESULT_OK && data != null) {
+        val bitmap = data.extras?.get("data") as? Bitmap
+        bitmap?.let {
+            val uri = saveBitmapToInternalStorage(it)
+            selectedImageUri = Uri.parse(uri)
+            if (uri != null) {
                 imageViewItem.setImageURI(selectedImageUri)
             } else {
                 Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
             }
         }
     }
+}
 
-
+private fun saveBitmapToInternalStorage(bitmap: Bitmap): String? {
+    return try {
+        val file = File(filesDir, "captured_image.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        outputStream.close()
+        file.absolutePath
+    } catch (e: IOException) {
+        e.printStackTrace()
+        null
+    }
+}
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_menu_modification_item, menu)
@@ -174,6 +205,40 @@ class ModificationItem: AppCompatActivity() {
     }
 
 
+    // Enregistrer les modifications dans la base de données
+private fun saveChanges() {
+    val newName = editTextName.text.toString()
+    val newQuantity = editTextQuantity.text.toString().toInt()
+    val newCategory = spinnerCategory.selectedItem.toString()
+    val newImageUri = selectedImageUri?.toString()
+
+    CoroutineScope(Dispatchers.IO).launch {
+        if (currentItem == null) {
+            // Create a new item
+            val newItem = Item(name = newName, quantity = newQuantity, category = newCategory, imageUri = newImageUri)
+            db.itemDao().insert(newItem)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@ModificationItem, "Item créé", Toast.LENGTH_SHORT).show()
+                finish() // Close the activity
+            }
+            Log.d("ModificationItem", "New item inserted: $newItem")
+        } else {
+            // Update the existing item
+            currentItem?.let { item ->
+                item.name = newName
+                item.quantity = newQuantity
+                item.category = newCategory
+                item.imageUri = newImageUri
+
+                db.itemDao().update(item)
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@ModificationItem, "Item modifié", Toast.LENGTH_SHORT).show()
+                    finish() // Close the activity
+                }
+            }
+        }
+    }
+}
 
 
 }

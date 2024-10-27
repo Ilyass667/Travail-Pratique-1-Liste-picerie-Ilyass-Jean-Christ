@@ -3211,6 +3211,7 @@ int id buttonDelete 0x7f090068
 int id buttonDelete2 0x7f090069
 int id buttonPanel 0x7f09006a
 int id buttonSelectImage 0x7f09006c
+int id buttonprisePhoto 0x7f09020e
 int id cache_measures 0x7f09006d
 int id callMeasure 0x7f09006e
 int id cancel_button 0x7f09006f
