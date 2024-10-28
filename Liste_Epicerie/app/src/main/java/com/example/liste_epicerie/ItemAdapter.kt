@@ -57,7 +57,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                 if (position != RecyclerView.NO_POSITION) {
                     val item = itemList[position]
                     CoroutineScope(Dispatchers.IO).launch {
-                        // Delete item from the database
+                        //Retirer l'item de la base de donné
                         val db = Room.databaseBuilder(
                             itemView.context,
                             ItemDatabase::class.java, "item_db"
@@ -65,7 +65,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                         db.itemDao().delete(item)
 
                         withContext(Dispatchers.Main) {
-                            // Remove item from the list and notify adapter
+
                             itemList.removeAt(position)
                             adapter.notifyItemRemoved(position)
                             val categoryAdapter = (itemView.context as MainActivity).findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter

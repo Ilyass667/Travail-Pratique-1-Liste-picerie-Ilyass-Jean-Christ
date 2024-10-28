@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Category"
+        android:text="Sélectionné une catégorie"
         android:paddingBottom="8dp" />
 
     <Spinner

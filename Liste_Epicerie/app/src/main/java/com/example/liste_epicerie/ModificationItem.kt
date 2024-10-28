@@ -109,7 +109,7 @@ class ModificationItem: AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete -> {
-                // Navigate back to MainActivity
+                // Navigation à MainActivity
                 finish()
                 true
             }
@@ -213,7 +213,7 @@ private fun saveChanges() {
 
     CoroutineScope(Dispatchers.IO).launch {
         if (currentItem == null) {
-            // Create a new item
+            // Créé un nouveaux item
             val newItem = Item(name = newName, quantity = newQuantity, category = newCategory, imageUri = newImageUri)
             db.itemDao().insert(newItem)
             withContext(Dispatchers.Main) {
@@ -222,7 +222,7 @@ private fun saveChanges() {
             }
             Log.d("ModificationItem", "New item inserted: $newItem")
         } else {
-            // Update the existing item
+            // Update l'item existant
             currentItem?.let { item ->
                 item.name = newName
                 item.quantity = newQuantity
@@ -232,7 +232,7 @@ private fun saveChanges() {
                 db.itemDao().update(item)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ModificationItem, "Item modifié", Toast.LENGTH_SHORT).show()
-                    finish() // Close the activity
+                    finish() //fermer l'activité
                 }
             }
         }

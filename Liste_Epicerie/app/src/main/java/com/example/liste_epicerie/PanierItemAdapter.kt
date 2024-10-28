@@ -37,7 +37,7 @@ class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemCl
                 if (position != RecyclerView.NO_POSITION) {
                     val item = items[position]
                     CoroutineScope(Dispatchers.IO).launch {
-                        // Delete item from the panier database
+                        // Supprimer item du panier
                         val db = Room.databaseBuilder(
                             itemView.context,
                             PanierDatabase::class.java, "panier_db"
@@ -46,7 +46,7 @@ class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemCl
 
                         withContext(Dispatchers.Main) {
                             val mainActivity = (itemView.context as MainActivity)
-                            // Remove item from the panier RecyclerView and notify adapter
+                            // Supprimer item du panier resycleView et notifier l'adapteur
                             mainActivity.deleteFromRecycleView(item)
                         }
                     }
