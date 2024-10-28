@@ -37,7 +37,6 @@ class GenericItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val img: ImageView
     val img2: ImageView
 
-
     init {
         layout = itemView as ConstraintLayout
         nomProduit = itemView.findViewById(R.id.nomProduits)
@@ -45,9 +44,6 @@ class GenericItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         img2 = itemView.findViewById(R.id.infos)
     }
 }
-
-
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: ItemDatabase
@@ -76,29 +72,27 @@ class MainActivity : AppCompatActivity() {
         // Initialisation du bouton
         val button3: Button = findViewById(R.id.button3)
 
-        // Set up RecyclerView
+        // Configuration de RecyclerView
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val recyclerViewPanier : RecyclerView = findViewById(R.id.recyclerViewPanier)
         findViewById<TextView>(R.id.textPanier).setText(R.string.panier)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerViewPanier.layoutManager = LinearLayoutManager(this)
 
-        // Set up Panier RecyclerView
+        // Configuration de RecyclerView Panier
 
-
-        // Load items from the database
+        // Charger les éléments depuis la base de données
         CoroutineScope(Dispatchers.IO).launch {
             val itemList = db.itemDao().getAllItems()
             val panierItemList = panierDb.panierItemDao().getAllPanierItems()
             Log.d(TAG, "onCreate: $itemList")
             Log.d(TAG, "onCreate: $panierItemList")
 
-
             withContext(Dispatchers.Main) {
-            val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value.toMutableList()) }.toMutableList()
-            recyclerView.adapter = CategoryAdapter(categories, { item ->
-                moveToPanier(item)
-            })
+                val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value.toMutableList()) }.toMutableList()
+                recyclerView.adapter = CategoryAdapter(categories, { item ->
+                    moveToPanier(item)
+                })
                 recyclerViewPanier.adapter = PanierItemAdapter(panierItemList) { panierItem ->
                     moveToCategories(panierItem)
                 }
@@ -122,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun moveToPanier(item: Item) {
         CoroutineScope(Dispatchers.IO).launch {
-            // Add item to the panier database
+            // Ajouter l'élément à la base de données du panier
             val panierItem = PanierItem(
                 name = item.name,
                 quantity = item.quantity,
@@ -131,12 +125,10 @@ class MainActivity : AppCompatActivity() {
             )
 
             db.itemDao().delete(item)
-
             panierDb.panierItemDao().insert(panierItem)
 
-
             withContext(Dispatchers.Main) {
-                // Remove item from its current RecyclerView
+                // Supprimer l'élément de son RecyclerView actuel
                 val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
                 val panierAdapter = findViewById<RecyclerView>(R.id.recyclerViewPanier).adapter as PanierItemAdapter
                 val category = currentAdapter.categories.find { it.items.contains(item) }
@@ -144,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                 currentAdapter.notifyDataSetChanged()
                 currentAdapter.checkAndRemoveEmptyCategories()
 
-                // Add item to the panier RecyclerView
+                // Ajouter l'élément au RecyclerView du panier
                 panierList.add(item)
                 panierAdapter.items.add(panierItem)
                 panierAdapter.notifyDataSetChanged()
@@ -152,6 +144,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -159,7 +152,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun moveToCategories(panierItem: PanierItem) {
         CoroutineScope(Dispatchers.IO).launch {
-            // Add item back to the main database
+            // Ajouter l'élément à nouveau à la base de données principale
             val item = Item(
                 id = panierItem.id,
                 name = panierItem.name,
@@ -168,15 +161,14 @@ class MainActivity : AppCompatActivity() {
                 imageUri = panierItem.imageUri
             )
             panierDb.panierItemDao().delete(panierItem)
-
             db.itemDao().insert(item)
 
-            // Delete item from the panier database
+            // Supprimer l'élément de la base de données du panier
 
             withContext(Dispatchers.Main) {
-                // Remove item from the panier RecyclerView
+                // Supprimer l'élément du RecyclerView du panier
                 deleteFromRecycleView(panierItem)
-                // Add item back to the categories RecyclerView
+                // Ajouter l'élément au RecyclerView des catégories
                 val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
                 val category = currentAdapter.categories.find { it.name == item.category }
                 if (category != null) {
@@ -197,7 +189,4 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.textPanier).visibility = View.GONE
         }
     }
-
-
-
 }
