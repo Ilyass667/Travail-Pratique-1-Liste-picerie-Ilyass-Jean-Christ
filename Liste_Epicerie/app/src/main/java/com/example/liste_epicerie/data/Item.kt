@@ -10,6 +10,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Update
 
+// Définition de l'entité Item
 @Entity
 data class Item(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -19,6 +20,7 @@ data class Item(
     var imageUri: String?
 )
 
+// Définition de l'entité PanierItem
 @Entity
 data class PanierItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -27,11 +29,14 @@ data class PanierItem(
     var category: String,
     var imageUri: String?
 )
+
+// Base de données pour les éléments du panier
 @Database(entities = [PanierItem::class], version = 1)
 abstract class PanierDatabase : RoomDatabase() {
     abstract fun panierItemDao(): PanierItemDao
 }
 
+// DAO pour les éléments du panier
 @Dao
 interface PanierItemDao {
     @Insert
@@ -43,16 +48,19 @@ interface PanierItemDao {
     @Delete
     fun delete(item: PanierItem)
 
-    @Query ("DELETE FROM PanierItem")
+    @Query("DELETE FROM PanierItem")
     fun deleteAll()
 }
 
 
-
+// Définition de la classe Category
 data class Category(val name: String, val items: MutableList<Item>)
+
+// Définition de la classe Panier
 data class Panier(val items: MutableList<PanierItem>)
 
 
+// DAO pour les éléments
 @Dao
 interface ItemDao {
     @Insert
@@ -71,6 +79,7 @@ interface ItemDao {
     fun getAllItems(): MutableList<Item>
 }
 
+// Base de données pour les éléments
 @Database(entities = [Item::class], version = 1)
 abstract class ItemDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDao

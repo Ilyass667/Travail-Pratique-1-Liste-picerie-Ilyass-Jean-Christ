@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerViewPanier.layoutManager = LinearLayoutManager(this)
 
-        // Configuration de RecyclerView Panier
 
         // Charger les éléments depuis la base de données
         CoroutineScope(Dispatchers.IO).launch {

@@ -20,8 +20,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.log
 
+// Adaptateur pour les éléments
 class ItemAdapter(private val itemList: MutableList<Item>, private val onItemClicked: (Item) -> Unit) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
+    // ViewHolder pour les éléments
     class ItemViewHolder(private val itemList: MutableList<Item>, itemView: View, private val onItemClicked: (Item) -> Unit, private val adapter: ItemAdapter) : RecyclerView.ViewHolder(itemView)  {
         val textViewName: TextView = itemView.findViewById(R.id.textViewName)
         val textViewQuantity: TextView = itemView.findViewById(R.id.textViewQuantity)
@@ -30,6 +32,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
         val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete)
 
         init {
+            // Gestion du clic sur l'élément
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -39,6 +42,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                 }
             }
 
+            // Gestion du clic sur le bouton d'action
             buttonAction.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -50,14 +54,13 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                 }
             }
 
-
-
+            // Gestion du clic sur le bouton de suppression
             buttonDelete.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = itemList[position]
                     CoroutineScope(Dispatchers.IO).launch {
-                        //Retirer l'item de la base de donné
+                        // Retirer l'item de la base de données
                         val db = Room.databaseBuilder(
                             itemView.context,
                             ItemDatabase::class.java, "item_db"
@@ -65,7 +68,7 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                         db.itemDao().delete(item)
 
                         withContext(Dispatchers.Main) {
-
+                            // Mettre à jour la liste et l'adaptateur
                             itemList.removeAt(position)
                             adapter.notifyItemRemoved(position)
                             val categoryAdapter = (itemView.context as MainActivity).findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
@@ -74,20 +77,16 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
                     }
                 }
             }
-
-
         }
     }
 
-
-
+    // Crée un nouveau ViewHolder pour un élément
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
         return ItemViewHolder(itemList, itemView, onItemClicked, this)
     }
 
-
-
+    // Lie les données d'un élément au ViewHolder
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.textViewName.text = currentItem.name
@@ -98,11 +97,12 @@ class ItemAdapter(private val itemList: MutableList<Item>, private val onItemCli
         }
     }
 
+    // Supprime un élément de la liste
     fun removeItem(position: Int) {
         itemList.removeAt(position)
         notifyItemRemoved(position)
-
     }
 
+    // Retourne le nombre d'éléments
     override fun getItemCount() = itemList.size
 }

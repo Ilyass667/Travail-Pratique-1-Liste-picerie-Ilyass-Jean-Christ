@@ -18,26 +18,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// Adapter pour les items du panier
 class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemClicked: (PanierItem) -> Unit) : RecyclerView.Adapter<PanierItemAdapter.PanierItemViewHolder>() {
 
-        class PanierItemViewHolder(itemView: View, private val onItemClicked: (PanierItem) -> Unit, private val items: MutableList<PanierItem>) : RecyclerView.ViewHolder(itemView) {
-            val textViewName: TextView = itemView.findViewById(R.id.textViewName)
-            val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete2)
+    // ViewHolder pour les items du panier
+    class PanierItemViewHolder(itemView: View, private val onItemClicked: (PanierItem) -> Unit, private val items: MutableList<PanierItem>) : RecyclerView.ViewHolder(itemView) {
+        val textViewName: TextView = itemView.findViewById(R.id.textViewName)
+        val buttonDelete: Button = itemView.findViewById(R.id.buttonDelete2)
 
-            init {
-                itemView.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        onItemClicked(items[position])
-                    }
+        init {
+            // Définir le clic sur l'item
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClicked(items[position])
                 }
+            }
 
+            // Définir le clic sur le bouton de suppression
             buttonDelete.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = items[position]
                     CoroutineScope(Dispatchers.IO).launch {
-                        // Supprimer item du panier
+                        // Supprimer l'item du panier
                         val db = Room.databaseBuilder(
                             itemView.context,
                             PanierDatabase::class.java, "panier_db"
@@ -46,7 +50,7 @@ class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemCl
 
                         withContext(Dispatchers.Main) {
                             val mainActivity = (itemView.context as MainActivity)
-                            // Supprimer item du panier resycleView et notifier l'adapteur
+                            // Supprimer l'item du RecyclerView et notifier l'adapteur
                             mainActivity.deleteFromRecycleView(item)
                         }
                     }
@@ -55,15 +59,18 @@ class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemCl
         }
     }
 
+    // Créer le ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PanierItemViewHolder {
-val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_panier, parent, false)
-return PanierItemViewHolder(itemView, onItemClicked, items)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_panier, parent, false)
+        return PanierItemViewHolder(itemView, onItemClicked, items)
     }
 
+    // Lier les données au ViewHolder
     override fun onBindViewHolder(holder: PanierItemViewHolder, position: Int) {
         val currentItem = items[position]
         holder.textViewName.text = currentItem.name
     }
 
+    // Retourner le nombre d'items
     override fun getItemCount() = items.size
 }
