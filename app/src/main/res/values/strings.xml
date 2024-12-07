@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Liste Épicerie</string>
+
+    <string-array name="category_array">
+        <item>Boulangerie</item>
+        <item>Produits laitiers</item>
+        <item>Fruits et légumes</item>
+        <item>Produits surgelés</item>
+        <item>Viande</item>
+        <item>Non classé</item>
+    </string-array>
+
+    <string name="panier">Panier</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
