@@ -16,6 +16,16 @@
         android:theme="@style/Theme.Liste_Epicerie"
         tools:targetApi="31">
 
+        <!-- AuthActivity (Nouvelle activité principale) -->
+        <activity
+            android:name=".AuthActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- RecipeDetailsActivity -->
         <activity
             android:name=".RecipeDetailsActivity"
@@ -26,15 +36,10 @@
             android:name=".Recette"
             android:exported="true" />
 
-
+        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
 
         <!-- ModificationItem -->
         <activity
@@ -52,5 +57,4 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 </manifest>
