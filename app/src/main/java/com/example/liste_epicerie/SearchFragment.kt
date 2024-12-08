@@ -1,5 +1,6 @@
 package com.example.liste_epicerie
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,7 +24,13 @@ class SearchFragment : Fragment() {
             // Fermer l'activité en cours et revenir à MainActivity
             requireActivity().finish()
         }
-
+        // Bouton Recettes Favorites
+        val favoritesButton: View = view.findViewById(R.id.favorites_button)
+        favoritesButton.setOnClickListener {
+            // Naviguer vers l'activité RecetteFavorite (chat gpt)
+            val intent = Intent(requireContext(), RecetteFavorite::class.java)
+            startActivity(intent)
+        }
 
         // Utilise androidx.appcompat.widget.SearchView chat gpt
         val searchView: SearchView = view.findViewById(R.id.search_view)
