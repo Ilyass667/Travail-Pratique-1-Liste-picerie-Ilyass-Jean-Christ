@@ -24,7 +24,6 @@ import com.example.liste_epicerie.data.Item
 import com.example.liste_epicerie.data.Panier
 import com.example.liste_epicerie.data.PanierDatabase
 import com.example.liste_epicerie.data.PanierItem
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,13 +55,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val logoutButton: Button = findViewById(R.id.logout_button)
-        logoutButton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut() // Déconnecter l'utilisateur
-            val intent = Intent(this, AuthActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Efface la pile d'activités (chat gpt)
-            startActivity(intent)
-        }
 
         // Bouton pour accéder à la page des recettes
         val buttonRecipes: Button = findViewById(R.id.button_recipes)
@@ -86,42 +78,35 @@ class MainActivity : AppCompatActivity() {
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_achat_container, ListeAchat.newInstance())
-                .replace(R.id.fragment_panier_container, PanierFragment.newInstance())
-                .commit()
-        }
-
         // Initialisation du bouton
         val button3: Button = findViewById(R.id.button3)
 
-//        // Configuration de RecyclerView
-//        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-//        val recyclerViewPanier : RecyclerView = findViewById(R.id.recyclerViewPanier)
-//        findViewById<TextView>(R.id.textPanier).setText(R.string.panier)
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerViewPanier.layoutManager = LinearLayoutManager(this)
+        // Configuration de RecyclerView
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        val recyclerViewPanier : RecyclerView = findViewById(R.id.recyclerViewPanier)
+        findViewById<TextView>(R.id.textPanier).setText(R.string.panier)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerViewPanier.layoutManager = LinearLayoutManager(this)
 
 
-//        // Charger les éléments depuis la base de données
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val itemList = db.itemDao().getAllItems()
-//            val panierItemList = panierDb.panierItemDao().getAllPanierItems()
-//            Log.d(TAG, "onCreate: $itemList")
-//            Log.d(TAG, "onCreate: $panierItemList")
-//
-//            withContext(Dispatchers.Main) {
-//                val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value.toMutableList()) }.toMutableList()
-//                recyclerView.adapter = CategoryAdapter(categories, { item ->
-//                    moveToPanier(item)
-//                })
-//                recyclerViewPanier.adapter = PanierItemAdapter(panierItemList) { panierItem ->
-//                    moveToCategories(panierItem)
-//                }
-//                panierList.addAll(panierItemList.map { Item(it.id, it.name, it.quantity, it.category, it.imageUri) })
-//            }
-//        }
+        // Charger les éléments depuis la base de données
+        CoroutineScope(Dispatchers.IO).launch {
+            val itemList = db.itemDao().getAllItems()
+            val panierItemList = panierDb.panierItemDao().getAllPanierItems()
+            Log.d(TAG, "onCreate: $itemList")
+            Log.d(TAG, "onCreate: $panierItemList")
+
+            withContext(Dispatchers.Main) {
+                val categories = itemList.groupBy { it.category }.map { Category(it.key, it.value.toMutableList()) }.toMutableList()
+                recyclerView.adapter = CategoryAdapter(categories, { item ->
+                    moveToPanier(item)
+                })
+                recyclerViewPanier.adapter = PanierItemAdapter(panierItemList) { panierItem ->
+                    moveToCategories(panierItem)
+                }
+                panierList.addAll(panierItemList.map { Item(it.id, it.name, it.quantity, it.category, it.imageUri) })
+            }
+        }
 
         // Ajout de l'action lors du clic sur le bouton
         button3.setOnClickListener {
@@ -173,43 +158,43 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-//    private fun moveToCategories(panierItem: PanierItem) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            // Ajouter l'élément à nouveau à la base de données principale
-//            val item = Item(
-//                id = panierItem.id,
-//                name = panierItem.name,
-//                quantity = panierItem.quantity,
-//                category = panierItem.category,
-//                imageUri = panierItem.imageUri
-//            )
-//            panierDb.panierItemDao().delete(panierItem)
-//            db.itemDao().insert(item)
-//
-//            // Supprimer l'élément de la base de données du panier
-//
-//            withContext(Dispatchers.Main) {
-//                // Supprimer l'élément du RecyclerView du panier
-//                deleteFromRecycleView(panierItem)
-//                // Ajouter l'élément au RecyclerView des catégories
-//                val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
-//                val category = currentAdapter.categories.find { it.name == item.category }
-//                if (category != null) {
-//                    category.items.add(item)
-//                } else {
-//                    currentAdapter.categories.add(Category(item.category, mutableListOf(item)))
-//                }
-//                currentAdapter.notifyDataSetChanged()
-//            }
-//        }
-//    }
+    private fun moveToCategories(panierItem: PanierItem) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ajouter l'élément à nouveau à la base de données principale
+            val item = Item(
+                id = panierItem.id,
+                name = panierItem.name,
+                quantity = panierItem.quantity,
+                category = panierItem.category,
+                imageUri = panierItem.imageUri
+            )
+            panierDb.panierItemDao().delete(panierItem)
+            db.itemDao().insert(item)
 
-//    fun deleteFromRecycleView(item: PanierItem) {
-//        val panierAdapter = findViewById<RecyclerView>(R.id.recyclerViewPanier).adapter as PanierItemAdapter
-//        panierAdapter.items.remove(item)
-//        panierAdapter.notifyDataSetChanged()
-//        if (panierAdapter.items.isEmpty()) {
-//            findViewById<TextView>(R.id.textPanier).visibility = View.GONE
-//        }
-//    }
+            // Supprimer l'élément de la base de données du panier
+
+            withContext(Dispatchers.Main) {
+                // Supprimer l'élément du RecyclerView du panier
+                deleteFromRecycleView(panierItem)
+                // Ajouter l'élément au RecyclerView des catégories
+                val currentAdapter = findViewById<RecyclerView>(R.id.recyclerView).adapter as CategoryAdapter
+                val category = currentAdapter.categories.find { it.name == item.category }
+                if (category != null) {
+                    category.items.add(item)
+                } else {
+                    currentAdapter.categories.add(Category(item.category, mutableListOf(item)))
+                }
+                currentAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun deleteFromRecycleView(item: PanierItem) {
+        val panierAdapter = findViewById<RecyclerView>(R.id.recyclerViewPanier).adapter as PanierItemAdapter
+        panierAdapter.items.remove(item)
+        panierAdapter.notifyDataSetChanged()
+        if (panierAdapter.items.isEmpty()) {
+            findViewById<TextView>(R.id.textPanier).visibility = View.GONE
+        }
+    }
 }
