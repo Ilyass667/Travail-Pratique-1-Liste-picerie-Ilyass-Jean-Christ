@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.liste_epicerie.app-mergeDebugResources-33:/values-cs/values-cs.xml",
+            "outputFile": "com.example.liste_epicerie.app-mergeDebugResources-41:/values-cs/values-cs.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\biyad\\.gradle\\caches\\transforms-4\\706566ec151b094c4d9a7d25b190e4f9\\transformed\\material-1.12.0\\res\\values-cs\\values-cs.xml",
+                    "source": "C:\\Users\\pound\\.gradle\\caches\\transforms-4\\ce421f6dde06eeee7738b7c4547b4234\\transformed\\material-1.12.0\\res\\values-cs\\values-cs.xml",
                     "from": {
                         "startLines": "2,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\biyad\\.gradle\\caches\\transforms-4\\01eabdd5a3d17e75cd7964a84b0d4654\\transformed\\appcompat-1.7.0\\res\\values-cs\\values-cs.xml",
+                    "source": "C:\\Users\\pound\\.gradle\\caches\\transforms-4\\15878523e0b90b59dc8c72b6ab48ec49\\transformed\\appcompat-1.7.0\\res\\values-cs\\values-cs.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\biyad\\.gradle\\caches\\transforms-4\\ea7fd94fa75abe4b1e94071bf334c1e4\\transformed\\core-1.13.1\\res\\values-cs\\values-cs.xml",
+                    "source": "C:\\Users\\pound\\.gradle\\caches\\transforms-4\\62276988966de53986c01792a628a98b\\transformed\\core-1.13.1\\res\\values-cs\\values-cs.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
