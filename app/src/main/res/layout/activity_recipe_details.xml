@@ -49,5 +49,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="14sp" />
+
+        <!-- Bouton Favori -->
+        <Button
+            android:id="@+id/favorite_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Ajouter aux favoris"
+            android:backgroundTint="@color/black"
+            android:textColor="@android:color/white"
+            android:padding="8dp" />
     </LinearLayout>
 </ScrollView>
