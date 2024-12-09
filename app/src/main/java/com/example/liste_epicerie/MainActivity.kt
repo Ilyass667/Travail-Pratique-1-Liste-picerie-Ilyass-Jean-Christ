@@ -24,6 +24,7 @@ import com.example.liste_epicerie.data.Item
 import com.example.liste_epicerie.data.Panier
 import com.example.liste_epicerie.data.PanierDatabase
 import com.example.liste_epicerie.data.PanierItem
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,6 +56,13 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        val logoutButton: Button = findViewById(R.id.logout_button)
+        logoutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut() // Déconnecter l'utilisateur
+            val intent = Intent(this, AuthActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Efface la pile d'activités (chat gpt)
+            startActivity(intent)
+        }
 
         // Bouton pour accéder à la page des recettes
         val buttonRecipes: Button = findViewById(R.id.button_recipes)

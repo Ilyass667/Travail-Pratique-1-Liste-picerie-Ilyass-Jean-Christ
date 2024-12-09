@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "309009784642",
+    "project_id": "appmobile-6a4ea",
+    "storage_bucket": "appmobile-6a4ea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309009784642:android:d62001e85c0bcaa10bb2db",
+        "android_client_info": {
+          "package_name": "com.example.liste_epicerie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgpreOaRcMjDllmp_znR07gwKvATB6omk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
