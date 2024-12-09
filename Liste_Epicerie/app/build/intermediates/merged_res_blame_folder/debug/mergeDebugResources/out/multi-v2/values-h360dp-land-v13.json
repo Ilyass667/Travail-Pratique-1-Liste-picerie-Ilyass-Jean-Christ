@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.liste_epicerie.app-mergeDebugResources-33:/values-h360dp-land-v13/values-h360dp-land-v13.xml",
+            "outputFile": "com.example.liste_epicerie.app-mergeDebugResources-41:/values-h360dp-land-v13/values-h360dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\biyad\\.gradle\\caches\\transforms-4\\706566ec151b094c4d9a7d25b190e4f9\\transformed\\material-1.12.0\\res\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
+                    "source": "C:\\Users\\pound\\.gradle\\caches\\transforms-4\\ce421f6dde06eeee7738b7c4547b4234\\transformed\\material-1.12.0\\res\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

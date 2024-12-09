@@ -51,7 +51,7 @@ class PanierItemAdapter(val items: MutableList<PanierItem>, private val onItemCl
                         withContext(Dispatchers.Main) {
                             val mainActivity = (itemView.context as MainActivity)
                             // Supprimer l'item du RecyclerView et notifier l'adapteur
-                            mainActivity.deleteFromRecycleView(item)
+//                            mainActivity.deleteFromRecycleView(item)
                         }
                     }
                 }
