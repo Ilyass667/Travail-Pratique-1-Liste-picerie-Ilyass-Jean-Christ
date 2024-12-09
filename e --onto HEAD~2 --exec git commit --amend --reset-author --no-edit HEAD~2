@@ -1,0 +1,32 @@
+[33m064a8c9[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{0}: commit (amend): refactorisation
+[33ma2f2920[m HEAD@{1}: rebase (pick): refactorisation
+[33mdb60c67[m HEAD@{2}: commit (amend): refactorisation
+[33m269a614[m HEAD@{3}: rebase (pick): refactorisation
+[33m8d1e182[m HEAD@{4}: commit (amend): ajout des commentaires
+[33m8eff6f5[m HEAD@{5}: rebase (pick): ajout des commentaires
+[33mf42cf40[m HEAD@{6}: commit (amend): Add README.md
+[33mb7fe420[m HEAD@{7}: rebase (start): checkout HEAD~6
+[33m31f9fe8[m[33m ([m[1;32mmain[m[33m)[m HEAD@{8}: rebase (abort): returning to refs/heads/main
+[33m31f9fe8[m[33m ([m[1;32mmain[m[33m)[m HEAD@{9}: rebase (abort): returning to refs/heads/main
+[33mc4d0260[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{10}: commit: merge
+[33me2e7330[m HEAD@{11}: commit: merge
+[33m3b694f0[m HEAD@{12}: pull: updating HEAD
+[33m3b694f0[m HEAD@{13}: commit (amend): merge
+[33m31f9fe8[m[33m ([m[1;32mmain[m[33m)[m HEAD@{14}: checkout: moving from 4aebe9602dfc95bf0515fb3497c03572e5bd30eb to main
+[33m4aebe96[m HEAD@{15}: commit: merge
+[33m676ddce[m HEAD@{16}: commit (amend): refactorisation
+[33mafefbcf[m HEAD@{17}: rebase (pick): refactorisation
+[33m7866e21[m HEAD@{18}: commit (amend): refactorisation
+[33m9f37e87[m HEAD@{19}: rebase (start): checkout HEAD~4
+[33m31f9fe8[m[33m ([m[1;32mmain[m[33m)[m HEAD@{20}: commit: merge
+[33m0f5f121[m HEAD@{21}: commit (merge): Merge remote-tracking branch 'origin/main'
+[33mab79965[m HEAD@{22}: commit: refactorisation
+[33m9f37e87[m HEAD@{23}: commit: refactorisation
+[33ma27109a[m HEAD@{24}: commit: ajout des commentaires
+[33mb7fe420[m HEAD@{25}: pull --tags origin main: Fast-forward
+[33m12f78f3[m HEAD@{26}: commit (merge): Merge branch 'page1'
+[33m86d27bd[m HEAD@{27}: checkout: moving from page1 to main
+[33m603a572[m[33m ([m[1;31morigin/page1[m[33m, [m[1;32mpage1[m[33m)[m HEAD@{28}: checkout: moving from main to page1
+[33m86d27bd[m HEAD@{29}: commit: retrait des fichiers a ne pas traquer
+[33m973d2c4[m HEAD@{30}: commit: ajout de git ignore
+[33m0691084[m HEAD@{31}: clone: from https://github.com/Ilyass667/Travail-Pratique-1-Liste-picerie-Ilyass-Jean-Christ.git
