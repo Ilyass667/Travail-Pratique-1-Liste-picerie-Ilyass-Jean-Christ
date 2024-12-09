@@ -140,23 +140,7 @@ class ModificationItem: AppCompatActivity() {
         startActivityForResult(intent, 101)
     }
 
-    private fun saveImageToInternalStorage(uri: Uri): String? {
-        return try {
-            val inputStream = contentResolver.openInputStream(uri) ?: return null
-            val file = File(filesDir, "selected_image.jpg")
-            val outputStream = FileOutputStream(file)
 
-            inputStream.copyTo(outputStream)
-
-            inputStream.close()
-            outputStream.close()
-
-            file.absolutePath
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
 
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
@@ -185,18 +169,38 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
     }
 }
 
-private fun saveBitmapToInternalStorage(bitmap: Bitmap): String? {
-    return try {
-        val file = File(filesDir, "captured_image.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.close()
-        file.absolutePath
-    } catch (e: IOException) {
-        e.printStackTrace()
-        null
+    // source: https://www.youtube.com/watch?v=iumKvmpOgOA
+    //source 2: https://medium.com/@ankitashetty/android-code-to-save-image-in-internal-storage-on-button-click-891f1de39915
+    private fun saveImageToInternalStorage(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val file = File(filesDir, "selected_image.jpg")
+            val outputStream = FileOutputStream(file)
+
+            inputStream.copyTo(outputStream)
+
+            inputStream.close()
+            outputStream.close()
+
+            file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
     }
-}
+
+    private fun saveBitmapToInternalStorage(bitmap: Bitmap): String? {
+        return try {
+            val file = File(filesDir, "captured_image.jpg")
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.close()
+            file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_menu_modification_item, menu)
@@ -218,7 +222,7 @@ private fun saveChanges() {
             db.itemDao().insert(newItem)
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@ModificationItem, "Item créé", Toast.LENGTH_SHORT).show()
-                finish() // Close the activity
+                finish() // fermer l'activité
             }
             Log.d("ModificationItem", "New item inserted: $newItem")
         } else {
