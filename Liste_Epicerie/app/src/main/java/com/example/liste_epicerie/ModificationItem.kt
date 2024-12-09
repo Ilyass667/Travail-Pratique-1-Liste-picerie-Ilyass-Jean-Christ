@@ -59,24 +59,6 @@ class ModificationItem: AppCompatActivity() {
         // Récupérer l'ID de l'item via Intent
         val itemId = intent.getIntExtra("ITEM_ID", -1)
 
-        if (itemId != -1) {
-            CoroutineScope(Dispatchers.IO).launch {
-                currentItem = db.itemDao().getItemById(itemId)
-                withContext(Dispatchers.Main) {
-                    currentItem?.let { item ->
-                        editTextName.setText(item.name)
-                        editTextQuantity.setText(item.quantity.toString())
-                        spinnerCategory.setSelection(resources.getStringArray(R.array.category_array).indexOf(item.category))
-                        val uri: Uri? = item.imageUri?.let { Uri.parse(it) }
-                        if (item.imageUri != null) {
-                            imageViewItem.setImageURI(uri)
-                            selectedImageUri = uri
-                        }
-
-                    }
-                }
-            }
-        }
 
         // Charger l'item en arrière-plan avec une coroutine
         CoroutineScope(Dispatchers.IO).launch {
